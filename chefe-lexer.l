@@ -1,19 +1,18 @@
 %{
-#include "chefe-scanner.h"
+#include "chefe-lexer.h"
 %}
 
-number								[0-9]+
+%s header ingredients
+%x title
 
-%Start HEADER INGREDIENTS
+    int title_found = 0;
 
 %%
-^(.*)"."\n								{ BEGIN HEADER; return RECIPE_TITLE; }
-<HEADER>[.\n]*)/("Ingredientes."\n)		;
-"Ingredientes."							{ BEGIN INGREDIENTS; return SECTION_INGREDIENTS; }
-.										;
-%%
+    if (!title_found)
+        BEGIN(title);
 
-int yywrap(void)
-{
-	return 1;
-}
+<title>^(.*)\. 							{ title_found = 1; BEGIN(header); printf("<recipe_title, \"%s\">\n", yytext); }
+<header>Ingredientes\.			        { BEGIN(ingredients); printf("<section_ingredients>\n"); }
+<header>[.\n]*/Ingredientes\.     		;
+<ingredients>
+%%

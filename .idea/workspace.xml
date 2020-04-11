@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
-    <generated />
+    <generated>
+      <config projectName="chefe-lexer" targetName="chefe-lexer" />
+    </generated>
   </component>
-  <component name="CMakeSettings">
+  <component name="CMakeSettings" AUTO_RELOAD="true">
     <configurations>
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
     </configurations>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90e34729-0300-494f-811b-c7ddf5bae403" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/victor_borges.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/victor_borges.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chefe-lexer.l" beforeDir="false" afterPath="$PROJECT_DIR$/chefe-lexer.l" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +27,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -46,7 +53,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/OneDrive/Documentos/Intellij Dictionaries/portuguese-brazil_without-accents.dic" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -54,6 +61,13 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="web.server" />
+  </component>
+  <component name="RunManager">
+    <configuration name="chefe-lexer" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="chefe-lexer" TARGET_NAME="chefe-lexer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="chefe-lexer" RUN_TARGET_NAME="chefe-lexer">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="4" Folder0="C:\Users\Red\OneDrive\Documentos\Intellij Dictionaries" Folder1="C:\Users\Red\OneDrive\Documentos\Intellij Dictionaries" Folder2="C:\Users\Red\OneDrive\Documentos\Intellij Dictionaries" Folder3="C:\Users\Red\OneDrive\Documentos\Intellij Dictionaries" CustomDictionaries="4" CustomDictionary0="C:\Users\Red\OneDrive\Documentos\Intellij Dictionaries\portuguese-brazil.dic" CustomDictionary1="C:\Users\Red\OneDrive\Documentos\Intellij Dictionaries\portuguese-brazil_technical-terms.dic" CustomDictionary2="C:\Users\Red\OneDrive\Documentos\Intellij Dictionaries\portuguese-brazil_technical-terms_without-accents.dic" CustomDictionary3="C:\Users\Red\OneDrive\Documentos\Intellij Dictionaries\portuguese-brazil_without-accents.dic" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="project-level" UseSingleDictionary="true" />
   <component name="TaskManager">
@@ -64,6 +78,7 @@
       <option name="presentableId" value="Default" />
       <updated>1586624487781</updated>
       <workItem from="1586624490426" duration="2726000" />
+      <workItem from="1586627377613" duration="6019000" />
     </task>
     <servers />
   </component>
@@ -75,10 +90,10 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="375" y="99" key="EnvironmentVariablesDialog/0.0.1280.680@0.0.1280.680" timestamp="1586627163764" />
-    <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1586625751653">
+    <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1586627800397">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1586625751653" />
+    <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1586627800397" />
     <state x="142" y="0" key="SettingsEditor" timestamp="1586627210864">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
