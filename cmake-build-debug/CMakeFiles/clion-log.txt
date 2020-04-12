@@ -1,4 +1,0 @@
-/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" //wsl$/Ubuntu/home/victor-borges/git/chefe-lex
-zsh:cd:1: permission denied: //wsl$/Ubuntu/home/victor-borges/git/chefe-lex/cmake-build-debug
-CMake Error: The source directory "//wsl$/Ubuntu/home/victor-borges/git/chefe-lex" does not exist.
-Specify --help for usage, or press the help button on the CMake GUI.

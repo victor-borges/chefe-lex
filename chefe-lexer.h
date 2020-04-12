@@ -1,2 +1,0 @@
-#define RECIPE_TITLE 1
-#define SECTION_INGREDIENTS 2
