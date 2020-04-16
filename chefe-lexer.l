@@ -1,52 +1,86 @@
 %option noyywrap
 
-%s header ingredients methods
-%x title
+%x title header ingredients methods
 
     int title_found = 0;
+    int value_found = 0;
+    int modifier_found = 0;
 
-NAME                                [^\.\n]*
+NAME                                [a-zA-Z][^\.\n]*
 NUMBER                              [0-9]+
-DRY                                 g|kg|(pitadas?)(\ de\ )?
-LIQUID                              (ml|l|(fios?))(\ de\ )?
-MEASURE                             ((colher(es)?(\ de\ (sopa|chá))?)|(xícaras?)|(copos?))(\ de\ )?
+DRY                                 (g|kg|(pitadas?))\ de
+LIQUID                              (ml|l|(fios?))\ de
+MEASURE                             ((colher(es)?\ de\ (sopa|chá))?)|(xícaras?)|(copos?)\ de
+MEASURES                            {DRY}|{LIQUID}|{MEASURE}
 BOWL                                ({NUMBER}ª\ )?tigela
 DISH                                ({NUMBER}ª\ )?assadeira
 
 %%
-    if (!title_found)
-        BEGIN(title);
-
-<title>^{NAME}"."/\n				                            {
-                                                                    title_found = 1;
-                                                                    BEGIN(header);
+<INITIAL>^{NAME}\./\n				                            {
                                                                     printf("<recipe, \"%s\">\n", yytext);
+                                                                    BEGIN(header);
                                                                 }
 
 <header>{
-    ^Ingredientes\.		                                        {
-                                                                    BEGIN(ingredients);
+    ^Ingredientes\./\n		                                    {
                                                                     printf("<section_ingredients>\n");
+                                                                    BEGIN(ingredients);
                                                                 }
-    (.|\n)*/"Ingredientes."       	                            { }
+    .                                                           { }
 }
 
 <ingredients>{
     ^Pré-aqueça\ o\ forno\ a\ {NUMBER}\ °C\.                    { }
     ^Tempo\ de\ preparo:\ {NUMBER}\ ((horas?)|(minutos?))\.     { }
-    ^Modo\ de\ preparo\.                                        { BEGIN(methods); printf("<section_methods>\n"); }
-    {NUMBER}                                                    { printf("<value, \"%s\">\n", yytext); }
-    {DRY}                                                       { printf("<dry_modifier>\n"); }
-    {LIQUID}                                                    { printf("<liquid_modifier>\n"); }
-    {MEASURE}                                                   { }
-    {NAME}                                                      { printf("<ingredient, \"%s\">\n", yytext); }
+    ^Modo\ de\ preparo\.                                        { printf("<section_methods>\n"); BEGIN(methods); }
+    {NUMBER}                                                    { printf("<ingredient_value, \"%s\">\n", yytext); }
+
+    {DRY}                                                       {
+                                                                    if (modifier_found == 0)
+                                                                    {
+                                                                        modifier_found = 1;
+                                                                        printf("<dry_modifier>\n");
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        REJECT;
+                                                                    }
+                                                                }
+
+    {LIQUID}                                                    {
+                                                                    if (modifier_found == 0)
+                                                                    {
+                                                                        modifier_found = 1;
+                                                                        printf("<liquid_modifier>\n");
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        REJECT;
+                                                                    }
+                                                                }
+
+    {MEASURE}                                                   {
+                                                                    if (modifier_found == 0)
+                                                                    {
+                                                                        modifier_found = 1;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        REJECT;
+                                                                    }
+                                                                }
+
+    [^{MEASURES}]{NAME}/\n                                      {
+                                                                    value_found = 0;
+                                                                    modifier_found = 0;
+                                                                    printf("<ingredient_name, \"%s\">\n", yytext);
+                                                                }
 }
 
 <methods>{
-    Rendimento:\ {NUMBER}(\ (porções|pessoas))?\.               {
-                                                                    BEGIN(0);
-                                                                    title_found = 0;
-                                                                    printf("<serves>\n");
+    ^Rendimento\:\ {NUMBER}\ ((porç(ão|ões))|(pessoas?))\./\n   {
+                                                                    printf("<serves, \"%s\">\n", yytext);
+                                                                    BEGIN(INITIAL);
                                                                 }
     Retire\ (o|a)s?\ {NAME}\ do\ refrigerador\.                 { printf("<take, \"%s\">\n", yytext); }
     Coloque\ (o|a)s?\ {NAME}\ na\ {BOWL}\.                      { printf("<put, \"%s\">\n", yytext); }
@@ -59,7 +93,7 @@ DISH                                ({NUMBER}ª\ )?assadeira
     Liquidifique\ o\ conteúdo\ da\ {BOWL}\.                     { printf("<liquefy_bowl, \"%s\">\n", yytext); }
     Liquidifique\ (o|a)s?\ {NAME}\.                             { printf("<liquefy, \"%s\">\n", yytext); }
     Misture\ bem(\ a\ {BOWL})?\.                                { printf("<mix_well, \"%s\">\n", yytext); }
-    Misture(\ a\ {BOWL})?\ por\ {NUMBER}\ minutos\.             { printf("<stir, \"%s\">\n", yytext); }
+    Misture(\ a\ {BOWL})?\ por\ {NUMBER}\ minutos?\.            { printf("<stir, \"%s\">\n", yytext); }
     Misture\ (o|a)s?\ {NAME}\ na\ {BOWL}\.                      { printf("<stir_ingredient, \"%s\">\n", yytext); }
     Limpe\ a\ {BOWL}\.                                          { printf("<clean, \"%s\">\n", yytext); }
     Despeje\ o\ conteúdo\ da\ {BOWL}\ na\ {DISH}\.              { printf("<pour, \"%s\">\n", yytext); }
@@ -68,6 +102,11 @@ DISH                                ({NUMBER}ª\ )?assadeira
     Refrigere(\ por\ {NUMBER}\ horas?)?\.                       { printf("<refrigerate, \"%s\">\n", yytext); }
     {NAME}\ (o|a)s?\ {NAME}\ até\ {NAME}\.                      { printf("<verb_until, \"%s\">\n", yytext); }
     {NAME}\ (o|a)s?\ {NAME}\.                                   { printf("<verb, \"%s\">\n", yytext); }
+    ^{NAME}\./\n                                                {
+                                                                    BEGIN(header);
+                                                                    title_found = 1;
+                                                                    printf("<recipe, \"%s\">\n", yytext);
+                                                                }
 }
 
-<*>[\ \n]                                                       { }
+<*>([ ]|\n)                                                       { }
