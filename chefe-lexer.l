@@ -5,14 +5,14 @@
     int title_found = 0;
     int value_found = 0;
     int modifier_found = 0;
+    int current_line = 0;
 
-ALPHA                               [[:alpha:]]|á|Á|à|À|ã|Ã|â|Â|é|É|è|È|ê|Ê|Í|í|ì|Ì|ó|Ó|Ò|ò|Õ|õ|ô|Ô|Ú|ú|Ù|ù
+ALPHA                               [a-zA-ZáÁàÀãÃâÂéÉèÈêÊÍíìÌóÓÒòÕõôÔÚúÙù]
 NAME                                {ALPHA}[^\.\n]*
 NUMBER                              [0-9]+
-DRY                                 ((g|kg|(pitadas?))\ de\ )
-LIQUID                              ((ml|l|(fios?))\ de\ )
-MEASURE                             (((colher(es)?\ de\ (sopa|chá))?)|(xícaras?)|(copos?)\ de\ )
-MEASURES                            {DRY}|{LIQUID}|{MEASURE}
+DRY                                 (\ (g|kg|(pitadas?))\ de\ )
+LIQUID                              (\ (ml|l|(fios?))\ de\ )
+MEASURE                             (\ ((colher(es)?\ de\ (sopa|chá))?)|(xícaras?)|(copos?)\ de\ )
 BOWL                                ({NUMBER}ª\ )?tigela
 DISH                                ({NUMBER}ª\ )?assadeira
 
@@ -61,11 +61,12 @@ DISH                                ({NUMBER}ª\ )?assadeira
                                                                     }
                                                                 }
 
-    [^{MEASURES}[ ]]{NAME}/\n                                   { printf("<ingredient_name, \"%s\">\n", yytext); }
+    {NAME}/\n                                                   { printf("<ingredient_name, \"%s\">\n", yytext); }
     
     \n                                                          {
                                                                     value_found = 0;
                                                                     modifier_found = 0;
+                                                                    current_line++;
                                                                 }
 }
 
@@ -93,7 +94,7 @@ DISH                                ({NUMBER}ª\ )?assadeira
     Sirva\ com\ {NAME}\.                                        { printf("<serve, \"%s\">\n", yytext); }
     Refrigere(\ por\ {NUMBER}\ horas?)?\.                       { printf("<refrigerate, \"%s\">\n", yytext); }
     {NAME}\ (o|a)s?\ {NAME}\ até(\ que)?\ {NAME}\.              |
-    {NAME}\ até(\ que)?\ (o|a)s?\ {NAME}\.                     { printf("<verb_until, \"%s\">\n", yytext); }
+    {NAME}\ até(\ que)?\ (o|a)s?\ {NAME}\.                      { printf("<verb_until, \"%s\">\n", yytext); }
     {NAME}\ (o|a)s?\ {NAME}\.                                   { printf("<verb, \"%s\">\n", yytext); }
     ^{NAME}\./\n                                                {
                                                                     BEGIN(header);
@@ -102,4 +103,6 @@ DISH                                ({NUMBER}ª\ )?assadeira
                                                                 }
 }
 
-<*>([ ]|\n)                                                       { }
+<*>[ ]                                                          { }
+<*>\n                                                           { current_line++; }
+<*>.                                                            { printf("Unexpected token '%s' at line %d", yytext, current_line); }
