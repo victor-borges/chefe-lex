@@ -1,12 +1,10 @@
-<recipe> ::= <title> <ingredients> <methods> <serves>
+<recipe> ::= <title> <ingredients> <time> <preheat> <methods> <serves>
 	| <recipe> <recipe>
 
-<title> ::= <text> "." <newline>
+<title> ::= <text> "."
 
-<ingredients> ::= "Ingredientes." <newline>
-	| <ingredients> <ingredient> <newline>
-
-<newline> ::= "\n"
+<ingredients> ::= "Ingredientes."
+	| <ingredients> <ingredient>
 
 <ingredient> ::= <number> <modifier> <text>
 	| <number> <text>
@@ -47,8 +45,17 @@
 	| " copo de "
 	| " copos de "
 
-<methods> ::= "Modo de preparo." <newline>
-	| <methods> <method> <newline>
+<time> ::= "Tempo de preparo: " <number> " hora."
+	| "Tempo de preparo: " <number> " horas."
+	| "Tempo de preparo: " <number> " minuto."
+	| "Tempo de preparo: " <number> " minutos."
+	| λ
+
+<preheat> ::= "Pré-aqueça o forno a " <number> " °C."
+	| λ
+
+<methods> ::= "Modo de preparo."
+	| <methods> <method>
 
 <method> ::= <take>
 	| <put>
