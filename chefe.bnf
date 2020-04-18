@@ -1,0 +1,146 @@
+<recipe> ::= <title> <ingredients> <methods> <serves>
+	| <recipe> <recipe>
+
+<title> ::= <text> "." <newline>
+
+<ingredients> ::= "Ingredientes." <newline>
+	| <ingredients> <ingredient> <newline>
+
+<newline> ::= "\n"
+
+<ingredient> ::= <number> <modifier> <text>
+	| <number> <text>
+	| <modifier> <text>
+	| <text>
+
+<number> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+	| 1 <number>
+	| 2 <number>
+	| 3 <number>
+	| 4 <number>
+	| 5 <number>
+	| 6 <number>
+	| 7 <number>
+	| 8 <number>
+	| 9 <number>
+
+<modifier> ::= <dry>
+	| <liquid>
+	| <measure>
+
+<dry> ::= " g de "
+	| " kg de "
+	| " pitada de "
+	| " pitadas de "
+
+<liquid> ::= " ml de "
+	| " l de "
+	| " fio de "
+	| " fios de "
+
+<measure> ::= " colher de chá de "
+	| " colheres de chá de "
+	| " colher de sopa de "
+	| " colheres de sopa de "
+	| " xícara de "
+	| " xícaras de "
+	| " copo de "
+	| " copos de "
+
+<methods> ::= "Modo de preparo." <newline>
+	| <methods> <method> <newline>
+
+<method> ::= <take>
+	| <put>
+	| <fold>
+	| <add-dry>
+	| <add>
+	| <remove>
+	| <combine>
+	| <divide>
+	| <liquefy-bowl>
+	| <liquefy>
+	| <mix-well>
+	| <stir>
+	| <stir-ingredient>
+	| <clean>
+	| <pour>
+	| <rest>
+	| <serve>
+	| <refrigerate>
+	| <verb>
+	| <verb-until>
+
+<article> ::= " o "
+	| " os "
+	| " a "
+	| " as "
+
+<bowl> ::= " " <number> "ª tigela"
+	| " tigela"
+
+<dish> ::= " " <number> "ª assadeira"
+	| " assadeira"
+
+<take> ::= "Retire" <article> <text> "do refrigerador."
+
+<put> ::= "Coloque" <article> <text> "na" <bowl> "."
+	| "Coloque" <article> <text> "."
+
+<fold> ::= "Sove" <article> <text> "na" <bowl> "."
+	| "Sove" <article> <text> "."
+
+<add-dry> ::= "Adicione os ingredientes sólidos na" <bowl> "."
+	| "Adicione os ingredientes sólidos."
+
+<add> ::= "Adicione" <article> <text> "na" <bowl> "."
+	| "Adicione" <article> <text> "."
+
+<remove> ::= "Remova" <article> <text> "da" <bowl> "."
+	| "Remova" <article> <text> "."
+
+<combine> ::= "Combine" <article> <text> "na" <bowl> "."
+	| "Combine" <article> <text> "."
+
+<divide> ::= "Divida" <article> <text> "na" <bowl> "."
+	| "Divida" <article> <text> "."
+
+<liquefy> ::= "Liquidifique" <article> <text> "."
+
+<liquefy-bowl> ::= "Liquidifique o conteúdo da" <bowl> "."
+
+<mix-well> ::= "Misture bem a" <bowl> "."
+	| "Misture bem."
+
+<stir> ::= "Misture a" <bowl> " por " <number> " minutos."
+	| "Misture por " <number> " minutos."
+
+<stir-ingredient> ::= "Misture" <article> <text> "na" <bowl> "."
+
+<clean> ::= "Limpe a" <bowl> "."
+
+<pour> ::= "Despeje p conteúdo da" <bowl> " na" <dish> "."
+
+<rest> ::= "Deixe descansar."
+
+<serve> ::= "Sirva com" <text> "."
+
+<refrigerate> ::= "Refrigere por " <number> " hora."
+	| "Refrigere por " <number> " horas."
+	| "Refrigere."
+
+<verb-until> ::= <text> <article> <text> "até" <text> "."
+	| <text> <article> <text> "até que" <text> "."
+	| <text> "até" <article> <text> "."
+	| <text> "até que" <article> <text> "."
+
+<verb> ::= <text> <article> <text> "."
+
+<serves> ::= "Rendimento: " <number> <servings> "."
+	| λ
+
+<servings> ::= " porção"
+	| " porções"
+	| " pessoa"
+	| " pessoas"
+	| λ
