@@ -5,7 +5,7 @@
     int title_found = 0;
     int value_found = 0;
     int modifier_found = 0;
-    int current_line = 0;
+    int current_line = 1;
 
 ALPHA                               [a-zA-ZáÁàÀãÃâÂéÉèÈêÊÍíìÌóÓÒòÕõôÔÚúÙù]
 NAME                                {ALPHA}[^\.\n]*
@@ -18,13 +18,13 @@ DISH                                ({NUMBER}ª\ )?assadeira
 
 %%
 <INITIAL>^{NAME}\./\n				                            {
-                                                                    printf("<recipe, \"%s\">\n", yytext);
+                                                                    printf("<\033[0;36mrecipe\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext);
                                                                     BEGIN(header);
                                                                 }
 
 <header>{
     ^Ingredientes\./\n		                                    {
-                                                                    printf("<section_ingredients>\n");
+                                                                    printf("<\033[0;36msection_ingredients\033[0m>\n");
                                                                     value_found = 0;
                                                                     modifier_found = 0;
                                                                     BEGIN(ingredients);
@@ -35,14 +35,14 @@ DISH                                ({NUMBER}ª\ )?assadeira
 <ingredients>{
     ^Pré-aqueça\ o\ forno\ a\ {NUMBER}\ °C\.                    { }
     ^Tempo\ de\ preparo:\ {NUMBER}\ ((horas?)|(minutos?))\.     { }
-    ^Modo\ de\ preparo\.                                        { printf("<section_methods>\n"); BEGIN(methods); }
-    {NUMBER}                                                    { printf("<ingredient_value, \"%s\">\n", yytext); }
+    ^Modo\ de\ preparo\.                                        { printf("<\033[0;36msection_methods\033[0m>\n"); BEGIN(methods); }
+    {NUMBER}                                                    { printf("<\033[0;36mingredient_value\033[0m, \033[0;32m%s\033[0m>\n", yytext); }
 
     {DRY}                                                       {
                                                                     if (modifier_found == 0)
                                                                     {
                                                                         modifier_found = 1;
-                                                                        printf("<dry_modifier>\n");
+                                                                        printf("<\033[0;36mdry_modifier\033[0m>\n");
                                                                     }
                                                                 }
 
@@ -50,7 +50,7 @@ DISH                                ({NUMBER}ª\ )?assadeira
                                                                     if (modifier_found == 0)
                                                                     {
                                                                         modifier_found = 1;
-                                                                        printf("<liquid_modifier>\n");
+                                                                        printf("<\033[0;36mliquid_modifier\033[0m>\n");
                                                                     }
                                                                 }
 
@@ -61,7 +61,7 @@ DISH                                ({NUMBER}ª\ )?assadeira
                                                                     }
                                                                 }
 
-    {NAME}/\n                                                   { printf("<ingredient_name, \"%s\">\n", yytext); }
+    {NAME}/\n                                                   { printf("<\033[0;36mingredient_name\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
     
     \n                                                          {
                                                                     value_found = 0;
@@ -72,37 +72,37 @@ DISH                                ({NUMBER}ª\ )?assadeira
 
 <methods>{
     ^Rendimento\:\ {NUMBER}\ ((porç(ão|ões))|(pessoas?))\./\n   {
-                                                                    printf("<serves, \"%s\">\n", yytext);
+                                                                    printf("<\033[0;36mserves\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext);
                                                                     BEGIN(INITIAL);
                                                                 }
-    Retire\ (o|a)s?\ {NAME}\ do\ refrigerador\.                 { printf("<take, \"%s\">\n", yytext); }
-    Coloque\ (o|a)s?\ {NAME}\ na\ {BOWL}\.                      { printf("<put, \"%s\">\n", yytext); }
-    Sove\ (o|a)s?\ {NAME}\ na\ {BOWL}\.                         { printf("<fold, \"%s\">\n", yytext); }
-    Adicione\ os\ ingredientes\ sólidos(\ na\ {BOWL})?\.        { printf("<add_dry, \"%s\">\n", yytext); }
-    Adicione\ (o|a)s?\ {NAME}(\ na\ {BOWL})?\.                  { printf("<add, \"%s\">\n", yytext); }
-    Remova\ (o|a)s?\ {NAME}(\ da\ {BOWL})?\.                    { printf("<remove, \"%s\">\n", yytext); }
-    Combine\ (o|a)s?\ {NAME}(\ na\ {BOWL})?\.                   { printf("<combine, \"%s\">\n", yytext); }
-    Divida\ (o|a)s?\ {NAME}(\ na\ {BOWL})?\.                    { printf("<divide, \"%s\">\n", yytext); }
-    Liquidifique\ o\ conteúdo\ da\ {BOWL}\.                     { printf("<liquefy_bowl, \"%s\">\n", yytext); }
-    Liquidifique\ (o|a)s?\ {NAME}\.                             { printf("<liquefy, \"%s\">\n", yytext); }
-    Misture\ bem(\ a\ {BOWL})?\.                                { printf("<mix_well, \"%s\">\n", yytext); }
-    Misture(\ a\ {BOWL})?\ por\ {NUMBER}\ minutos?\.            { printf("<stir, \"%s\">\n", yytext); }
-    Misture\ (o|a)s?\ {NAME}\ na\ {BOWL}\.                      { printf("<stir_ingredient, \"%s\">\n", yytext); }
-    Limpe\ a\ {BOWL}\.                                          { printf("<clean, \"%s\">\n", yytext); }
-    Despeje\ o\ conteúdo\ da\ {BOWL}\ na\ {DISH}\.              { printf("<pour, \"%s\">\n", yytext); }
-    Deixe\ descansar\.                                          { printf("<rest>"); }
-    Sirva\ com\ {NAME}\.                                        { printf("<serve, \"%s\">\n", yytext); }
-    Refrigere(\ por\ {NUMBER}\ horas?)?\.                       { printf("<refrigerate, \"%s\">\n", yytext); }
+    Retire\ (o|a)s?\ {NAME}\ do\ refrigerador\.                 { printf("<\033[0;36mtake\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    Coloque\ (o|a)s?\ {NAME}\ na\ {BOWL}\.                      { printf("<\033[0;36mput\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    Sove\ (o|a)s?\ {NAME}\ na\ {BOWL}\.                         { printf("<\033[0;36mfold\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    Adicione\ os\ ingredientes\ sólidos(\ na\ {BOWL})?\.        { printf("<\033[0;36madd_dry\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    Adicione\ (o|a)s?\ {NAME}(\ na\ {BOWL})?\.                  { printf("<\033[0;36madd\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    Remova\ (o|a)s?\ {NAME}(\ da\ {BOWL})?\.                    { printf("<\033[0;36mremove\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    Combine\ (o|a)s?\ {NAME}(\ na\ {BOWL})?\.                   { printf("<\033[0;36mcombine\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    Divida\ (o|a)s?\ {NAME}(\ na\ {BOWL})?\.                    { printf("<\033[0;36mdivide\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    Liquidifique\ o\ conteúdo\ da\ {BOWL}\.                     { printf("<\033[0;36mliquefy_bowl\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    Liquidifique\ (o|a)s?\ {NAME}\.                             { printf("<\033[0;36mliquefy\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    Misture\ bem(\ a\ {BOWL})?\.                                { printf("<\033[0;36mmix_well\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    Misture(\ a\ {BOWL})?\ por\ {NUMBER}\ minutos?\.            { printf("<\033[0;36mstir\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    Misture\ (o|a)s?\ {NAME}\ na\ {BOWL}\.                      { printf("<\033[0;36mstir_ingredient\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    Limpe\ a\ {BOWL}\.                                          { printf("<\033[0;36mclean\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    Despeje\ o\ conteúdo\ da\ {BOWL}\ na\ {DISH}\.              { printf("<\033[0;36mpour\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    Deixe\ descansar\.                                          { printf("<\033[0;36mrest\033[0m>\n"); }
+    Sirva\ com\ {NAME}\.                                        { printf("<\033[0;36mserve\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    Refrigere(\ por\ {NUMBER}\ horas?)?\.                       { printf("<\033[0;36mrefrigerate\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
     {NAME}\ (o|a)s?\ {NAME}\ até(\ que)?\ {NAME}\.              |
-    {NAME}\ até(\ que)?\ (o|a)s?\ {NAME}\.                      { printf("<verb_until, \"%s\">\n", yytext); }
-    {NAME}\ (o|a)s?\ {NAME}\.                                   { printf("<verb, \"%s\">\n", yytext); }
+    {NAME}\ até(\ que)?\ (o|a)s?\ {NAME}\.                      { printf("<\033[0;36mverb_until\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
+    {NAME}\ (o|a)s?\ {NAME}\.                                   { printf("<\033[0;36mverb\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext); }
     ^{NAME}\./\n                                                {
                                                                     BEGIN(header);
                                                                     title_found = 1;
-                                                                    printf("<recipe, \"%s\">\n", yytext);
+                                                                    printf("<\033[0;36mrecipe\033[0m, \033[0;33m\"%s\"\033[0m>\n", yytext);
                                                                 }
 }
 
 <*>[ ]                                                          { }
 <*>\n                                                           { current_line++; }
-<*>.                                                            { printf("Unexpected token '%s' at line %d", yytext, current_line); }
+<*>.                                                            { fprintf(stderr, "\033[0;31mUnexpected token '%s' at line %d\n\033[0m", yytext, current_line); }
