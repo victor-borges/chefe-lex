@@ -10,16 +10,22 @@ A fim de manter o desenvolvimento do analisador léxico focado na linguagem a se
 
 ## Mão na massa
 
+Clone o repositório e seus submódulos:
+
+```shell
+git clone --recurse-submodules https://github.com/victor-borges/chefe
+```
+
 Baixe e instale o `flex` e um compilador de `C` (exemplo abaixo utiliza o [gcc](https://gcc.gnu.org/)):
 
 ```shell
 sudo apt-get update && sudo apt-get install flex gcc
 ```
 
-Com as dependências instaladas, execute o flex (cria o arquivo `lex.yy.c`):
+Com as dependências instaladas, navegue até a pasta do analisador léxico e execute o flex (cria o arquivo `lex.yy.c`):
 
 ```shell
-flex chefe-lexer.l
+cd chefe/chefe-lex && flex chefe-lexer.l
 ```
 
 Compile o arquivo `lex.yy.c` com a _flag_ `-lfl` para _linkar_ com a biblioteca do `flex` (cria o arquivo executável `a.out`):
@@ -40,4 +46,10 @@ Por possuir arquivos fontes relativamente grandes, é interessante redirecionar 
 
 ```shell
 ./a.out < ../chefe/receitas/bolo-de-ola-mundo-com-cobertura-de-chocolate.chefe
+```
+
+Para facilitar, use o _one-liner_ abaixo:
+
+```shell
+flex chefe-lexer.l && gcc lex.yy.c -lfl && ./a.out < ../receitas/bolo-de-ola-mundo-com-cobertura-de-chocolate.chefe
 ```
