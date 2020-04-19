@@ -1,11 +1,10 @@
-%option noyywrap
+%option noyywrap yylineno
 
 %x title header ingredients methods
 
     int title_found = 0;
     int value_found = 0;
     int modifier_found = 0;
-    int current_line = 1;
 
 ALPHA                               [a-zA-ZáÁàÀãÃâÂéÉèÈêÊÍíìÌóÓÒòÕõôÔÚúÙù]
 NAME                                {ALPHA}[^\.\n]*
@@ -66,7 +65,6 @@ DISH                                ({NUMBER}ª\ )?assadeira
     \n                                                          {
                                                                     value_found = 0;
                                                                     modifier_found = 0;
-                                                                    current_line++;
                                                                 }
 }
 
@@ -103,10 +101,15 @@ DISH                                ({NUMBER}ª\ )?assadeira
                                                                 }
 }
 
-<*>[ ]                                                          { }
-<*>\n                                                           { current_line++; }
-<*>.                                                            { fprintf(stderr, "\033[0;31mUnexpected token '%s' at line %d\n\033[0m", yytext, current_line); }
+<*>[ ]|\n                                                       { }
+<*>.                                                            { fprintf(stderr, "\033[0;31mUnexpected token '%s' at line %d\n\033[0m", yytext, yylineno); }
 
 %%
 
-int yywrap() { }
+int main(int argc, const char *argv[])
+{
+    while (yylex())
+        continue;
+
+    return 0;
+}
