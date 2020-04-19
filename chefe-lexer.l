@@ -106,3 +106,7 @@ DISH                                ({NUMBER}ª\ )?assadeira
 <*>[ ]                                                          { }
 <*>\n                                                           { current_line++; }
 <*>.                                                            { fprintf(stderr, "\033[0;31mUnexpected token '%s' at line %d\n\033[0m", yytext, current_line); }
+
+%%
+
+int yywrap() { }

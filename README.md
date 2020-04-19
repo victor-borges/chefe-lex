@@ -28,10 +28,10 @@ Com as dependências instaladas, navegue até a pasta do analisador léxico e ex
 cd chefe/chefe-lex && flex chefe-lexer.l
 ```
 
-Compile o arquivo `lex.yy.c` com a _flag_ `-lfl` para _linkar_ com a biblioteca do `flex` (cria o arquivo executável `a.out`):
+Compile o arquivo `lex.yy.c` (cria o arquivo executável `a.out`):
 
 ```shell
-gcc lex.yy.c -lfl
+gcc lex.yy.c
 ```
 
 Execute o arquivo `a.out`:
@@ -51,5 +51,5 @@ Por possuir arquivos fontes relativamente grandes, é interessante redirecionar 
 Para facilitar, use o _one-liner_ abaixo:
 
 ```shell
-flex chefe-lexer.l && gcc lex.yy.c -lfl && ./a.out < ../receitas/bolo-de-ola-mundo-com-cobertura-de-chocolate.chefe
+flex chefe-lexer.l && gcc lex.yy.c && ./a.out < ../receitas/bolo-de-ola-mundo-com-cobertura-de-chocolate.chefe
 ```
